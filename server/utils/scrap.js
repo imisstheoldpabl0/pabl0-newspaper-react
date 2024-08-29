@@ -18,13 +18,14 @@ const extractNewsData = async (url, browser) => {
         newsData['date'] = await page.$eval(".date", date => date.innerHTML)
 
         // title --> article title
-        newsData['headline'] = await page.$eval(".layout-title", headline => headline.innerHTML)
+        newsData['headline'] = await page.$eval(".font-caladea-regular", headline => headline.innerText)
 
+        newsData['img'] = await page.$eval(".story-promo figure img", img => img.src)
         //keypoints --> main article keypoints (commented because some articles donw have keypoints and therefore throw an error)
         //newsData['keypoints'] = await page.$eval(".key-points", keypoints => keypoints.innerText)
 
         // body --> body text
-        newsData['body'] = await page.$eval("#article-body", body => body.innerText)
+        newsData['body'] = await page.$eval(".body", p => p.innerText)
 
         return newsData;
 
@@ -65,8 +66,8 @@ const scrap = async (url) => {
         console.log(`Found urls: ${urls.length}`, urls)
 
         // choose how many links to extract (urls.length selects all found links)
-        const urls2 = urls.slice(0, urls.length);
-        //const urls2 = urls.slice(0, 3);
+        // const urls2 = urls.slice(0, urls.length);
+        const urls2 = urls.slice(0, 3);
 
         console.log(`${urls2.length} selected links`);
 
