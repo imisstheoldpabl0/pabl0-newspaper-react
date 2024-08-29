@@ -1,5 +1,6 @@
 const puppeteer = require("puppeteer");
 const fs = require("fs");
+const path = require("path")
 
 // extractNewsData() will extract the information from each product
 const extractNewsData = async (url, browser) => {
@@ -14,18 +15,10 @@ const extractNewsData = async (url, browser) => {
         // Pass the url of each found link in scrap() and extract the data
         await page.goto(url)
 
-        // date --> article date
         newsData['date'] = await page.$eval(".date", date => date.innerHTML)
-
-        // title --> article title
         newsData['headline'] = await page.$eval(".font-caladea-regular", headline => headline.innerText)
-
-        newsData['img'] = await page.$eval(".story-promo figure img", img => img.src)
-        //keypoints --> main article keypoints (commented because some articles donw have keypoints and therefore throw an error)
-        //newsData['keypoints'] = await page.$eval(".key-points", keypoints => keypoints.innerText)
-
-        // body --> body text
         newsData['body'] = await page.$eval(".body", p => p.innerText)
+        newsData['img'] = await page.$eval(".story-promo figure img", img => img.src)
 
         return newsData;
 
@@ -112,7 +105,7 @@ const scrap = async (url) => {
             });
             if (Object.prototype.hasOwnProperty('error')) {
                 console.log("Article not pushed")
-                !scrapedData.push(article);
+                return
 
             } else {
                 console.log("Pushed 1 more article");
@@ -133,7 +126,8 @@ const scrap = async (url) => {
 
 // Function to save data to JSON file
 const saveToJSON = (data, filename) => {
-    fs.writeFile(filename, JSON.stringify(data, null, 2), err => {
+    const filePath = path.join(__dirname, filename);
+    fs.writeFile(filePath, JSON.stringify(data, null, 2), err => {
         if (err) {
             console.error('Error writing to file', err);
         } else {
