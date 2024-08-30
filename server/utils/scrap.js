@@ -60,7 +60,7 @@ const scrap = async (url) => {
 
         // choose how many links to extract (urls.length selects all found links)
         // const urls2 = urls.slice(0, urls.length);
-        const urls2 = urls.slice(0, 3);
+        const urls2 = urls.slice(0, 20);
 
         console.log(`${urls2.length} selected links`);
 
@@ -103,9 +103,9 @@ const scrap = async (url) => {
                     writable: false,
                 },
             });
-            if (Object.prototype.hasOwnProperty('error')) {
+            if (Object.prototype.hasOwnProperty("error")) {
                 console.log("Article not pushed")
-                return
+                !scrapedData.push(article);
 
             } else {
                 console.log("Pushed 1 more article");
