@@ -46,7 +46,7 @@ const NewsList = ({ city, myLat, myLong }) => {
   };
 
   return (
-    <section>
+    <section className='news-list'>
 
       {displayArticles()}
 
