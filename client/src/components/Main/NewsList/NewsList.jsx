@@ -1,53 +1,66 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
-import NewsItem from './NewsItem/NewsItem';
+import React, { useEffect, useState } from 'react';
+import NewsItem from "./NewsItem/NewsItem";
+import axios from "axios";
+import './NewsList.css';
 
-const NewsList = () => {
-  const [news, setNews] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+const NewsList = ({ city, myLat, myLong }) => {
 
-  const fetchNews = useCallback(async () => {
-    if (loading || !hasMore) return;
-
-    setLoading(true);
-    try {
-      const response = await axios.get(`/api/news?page=${page}&limit=10`);
-      setNews((prevNews) => [...prevNews, ...response.data.articles]);
-      setHasMore(response.data.articles.length > 0);
-      setPage((prevPage) => prevPage + 1);
-    } catch (error) {
-      console.error("Error fetching news:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [page, loading, hasMore]);
+  const [articles, setArticles] = useState([]); // Para guardar las tarjetas de clima
 
   useEffect(() => {
-    fetchNews();
-  }, [fetchNews]);
+    async function fetchData() {
+      try {
+        // Petición HTTP
+        const res = await axios.get(`/api/all-news`);
+        let news = res.data;
+        // weather (res.data.list) is an [array] of objects [{},{},{}]
+        console.log(res);
+        console.log(news);
 
-  const handleScroll = () => {
-    if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 200 && hasMore && !loading) {
-      fetchNews();
+        // Guarda en el array de articles el resultado. Procesa los datos
+        setArticles(news
+          .map(l => l));
+
+      } catch (e) {
+        setArticles([]); // No pintes nada
+      }
     }
+
+    fetchData();
+  }, []); // cuando hay un cambio en la ciudad se vueve a ejecutar el useEffect              <img src={`http://openweathermap.org/img/w/${card.weather[0].icon}.png`} alt="Weather icon" />
+
+  const displayArticles = () => {
+    return articles.length !== 0
+      ? articles.map((article, index) => {
+        return (
+          <NewsItem
+            key={index}
+            date={article.date}
+            headline={article.headline}
+            body={article.body}
+            img={article.img}
+          />
+        );
+      })
+      : "";
   };
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
-
   return (
-    <div className="news-list">
-      {news.map((article, index) => (
-        <NewsItem key={index} article={article} />
-      ))}
-      {loading && <p>Loading more news...</p>}
-      {!hasMore && <p>No more news available</p>}
-    </div>
+    <section>
+
+      {displayArticles()}
+
+    </section>
   );
 };
 
 export default NewsList;
+
+
+// Madrid in metric units ${cityName}
+//https://api.openweathermap.org/data/2.5/forecast?units=metric&q=madrid&appid=3a5cea6cca9761e16b10a370cf420965
+
+//https://api.openweathermap.org/data/2.5/forecast?units=metric&q= ${city} &appid=3a5cea6cca9761e16b10a370cf420965
+
+// New API url with: ${lat}, ${lon}, ${apiKey}
+//https://api.openweathermap.org/data/2.5/forecast?units=metric&lat={lat}&lon={lon}&appid={apiKey}
