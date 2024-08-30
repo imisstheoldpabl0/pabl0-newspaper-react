@@ -4,47 +4,36 @@ const path = require("path")
 
 // extractNewsData() will extract the information from each product
 const extractNewsData = async (url, browser) => {
-
     try {
-        // newsData{} objetct will store the information of each product
         const newsData = {}
-
-        // Open up a new tab in the browser
         const page = await browser.newPage()
-
-        // Pass the url of each found link in scrap() and extract the data
         await page.goto(url)
 
-        newsData['date'] = await page.$eval(".date", date => date.innerHTML)
-        newsData['headline'] = await page.$eval(".font-caladea-regular", headline => headline.innerText)
-        newsData['body'] = await page.$eval(".body", p => p.innerText)
-        newsData['img'] = await page.$eval(".story-promo figure img", img => img.src)
+        newsData['date'] = await page.$eval(".date", date => date.innerHTML);
+        newsData['headline'] = await page.$eval(".font-caladea-regular", headline => headline.innerText);
+        newsData['body'] = await page.$eval(".body", p => p.innerText);
+        newsData['img'] = await page.$eval(".story-promo figure img", img => img.src);
 
+        await page.close();
         return newsData;
 
     }
     catch (err) {
-        // return the error and its location
-        return { error: err + `Something went wrong at extractNewsData()`}
+        console.error(`Error on page ${url}:`, err.message);
+        return { error: err.message }; // Capture only the error message
     }
-}
+};
 
-// scrap() function will 
+// Function to scrap the website
 const scrap = async (url) => {
+    const scrapedData = []
+
     try {
-        // create an empty array which will store the information from the products
-        const scrapedData = []
-
-        // initialize a new browser instance and select headless option (show browser or not)
-
         console.log("Opening the browser...");
         const browser = await puppeteer.launch({ headless: true })
-
-        // open up a new tab (page)
         const page = await browser.newPage();
-
-        // pass the general url it should navigate to (this is the base url that contains all of the other links)
         await page.goto(url);
+
         console.log(`Navigating to ${url}...`);
 
         // find all links with this selector
@@ -60,68 +49,65 @@ const scrap = async (url) => {
 
         // choose how many links to extract (urls.length selects all found links)
         // const urls2 = urls.slice(0, urls.length);
-        const urls2 = urls.slice(0, 20);
-
-        console.log(`${urls2.length} selected links`);
+        const urlsToProcess = urls.slice(0, 20);
+        console.log(`${urlsToProcess.length} selected links`);
 
         // iterate over the found links list and edit each object to clean up the information received
-        for (productLink in urls2) {
-            const article = await extractNewsData(urls2[productLink], browser);
-
-            Object.defineProperties(article, {
-                date: {
-                    value: article.date || 'N/A',
-                    writable: false,
-                },
-                headline: {
-                    value: article.headline || 'N/A',
-                    writable: false,
-                },
-                /* keypoints: {
-                    value: (article.keypoints || 'N/A')
-                        .replace(/ZINGER KEY POINTS/, "")
-                        .replace(/\n/g, " ")
-                        .replace(/’/g, "'"),
-                    writable: false,
-                }, */
-                body: {
-                    value: (article.body || 'N/A')
-                        .replace(/\n/g, " ") // line skip --> space char
-                        .replace(/Loading...  /g, "") // loading text --> nothing
-                        .replace(/’/g, "'") // weird apostrophe --> normal one
-                        .replace(/‘/g, "'") // weird apostrophe --> normal one
-                        .replace(/\"/g, "") // backslash ( \ ) --> nothing
-                        .replace(/ /g, " ") // weird space ( ) --> normal space char
-                        .replace(/–/g, "") // weird dash ( – ) --> normal space char
-                        // .replace(/:/g, "") // column ( : ) --> normal space char
-                        // .replace(/;/g, "") // semi-column ( ; ) --> normal space char
-                        .replace(/|/g, "") // semi-column ( | ) --> normal space char
-                        .replace(/  /g, " "), // double space ( | ) --> single space char
+        for (let link of urlsToProcess) {
+            const article = await extractNewsData(link, browser);
+            if (!article.error) {
+                Object.defineProperties(article, {
+                    date: {
+                        value: article.date || 'N/A',
+                        writable: false,
+                    },
+                    headline: {
+                        value: article.headline || 'N/A',
+                        writable: false,
+                    },
+                    /* keypoints: {
+                        value: (article.keypoints || 'N/A')
+                            .replace(/ZINGER KEY POINTS/, "")
+                            .replace(/\n/g, " ")
+                            .replace(/’/g, "'"),
+                        writable: false,
+                    }, */
+                    body: {
+                        value: (article.body || 'N/A')
+                            .replace(/\n/g, " ") // line skip --> space char
+                            .replace(/Loading...  /g, "") // loading text --> nothing
+                            .replace(/’/g, "'") // weird apostrophe --> normal one
+                            .replace(/‘/g, "'") // weird apostrophe --> normal one
+                            .replace(/\"/g, "") // backslash ( \ ) --> nothing
+                            .replace(/ /g, " ") // weird space ( ) --> normal space char
+                            .replace(/–/g, "") // weird dash ( – ) --> normal space char
+                            // .replace(/:/g, "") // column ( : ) --> normal space char
+                            // .replace(/;/g, "") // semi-column ( ; ) --> normal space char
+                            .replace(/|/g, "") // semi-column ( | ) --> normal space char
+                            .replace(/  /g, " "), // double space ( | ) --> single space char
                         // .replace(/,/g, " ") // comma ( , ) --> nothing
                         // .replace(/./g, " ") // period ( . ) --> nothing
                         // .replace(/'/g, " "), // regular apostrophe ( ' ) --> nothing
-                    writable: false,
-                },
-            });
-            if (Object.prototype.hasOwnProperty("error")) {
-                console.log("Article not pushed")
-                !scrapedData.push(article);
+                        writable: false,
+                    },
+                })
+                scrapedData.push(article);
+                console.log(`Successfully scraped: ${link}`);
 
             } else {
-                console.log("Pushed 1 more article");
-                scrapedData.push(article);
+                console.log(`Skipped article due to error: ${article.error}`);
             }
         }
 
         // close the browser instance
         await browser.close()
 
-        // return the scrapedData array with all of the data from each of the articles
-        return scrapedData;
+    // return the scrapedData array with all of the data from each of the articles
+    return scrapedData;
 
-    } catch (err) {
-        console.log("Error:", err);
-    }
+} catch (err) {
+    console.log("Error:", err);
+}
 }
 
 // Function to save data to JSON file
