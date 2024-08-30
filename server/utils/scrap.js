@@ -49,7 +49,7 @@ const scrap = async (url) => {
 
         // choose how many links to extract (urls.length selects all found links)
         // const urls2 = urls.slice(0, urls.length);
-        const urlsToProcess = urls.slice(0, 20);
+        const urlsToProcess = urls.slice(0, 200);
         console.log(`${urlsToProcess.length} selected links`);
 
         // iterate over the found links list and edit each object to clean up the information received
@@ -58,7 +58,8 @@ const scrap = async (url) => {
             if (!article.error) {
                 Object.defineProperties(article, {
                     date: {
-                        value: article.date || 'N/A',
+                        value: (article.date || 'N/A')
+                        .replace(/,/g, ""), // line skip --> space char
                         writable: false,
                     },
                     headline: {
