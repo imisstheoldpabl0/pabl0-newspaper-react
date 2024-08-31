@@ -1,6 +1,53 @@
+/* NewsList.css */
 .news-list {
     display: grid;
-    flex-direction: column;
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 15px;
 }
+  
+  @media (max-width: 768px) {
+    .news-list {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  /* Optionally style the NewsItem itself here if you want consistency */
+  .news-item {
+    background-color: #f4f4f4;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
+    height: 280px;
+    width: 250px;
+    overflow: hidden;
+
+    .headline {
+        font-size: 18px;
+        text-align: left;
+        justify-content:flex-start;
+        color: black;
+        margin: 12px;
+        width: 250px;
+    }
+    
+    .date {
+        font-size: 12px;
+        color: black;
+    }
+    
+    .body {
+        font-size: 16px;
+        width: 500px;
+        text-align: left;
+        margin: 12px;
+        color: black;
+    }
+
+    .img {
+        width: 250px;
+        border-radius: 12px;
+    }
+  }
+  

@@ -2,8 +2,7 @@ import React from "react";
 
 const Header = () => {
   return (
-    <section>
-      <h2>This is Header.jsx</h2>
+    <section className="header">
     </section>
   );
 };
