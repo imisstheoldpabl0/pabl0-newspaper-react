@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import NewsItem from './NewsItem/NewsItem.jsx';
 import './NewsList.css';
+import NewsLoading from './NewsLoading/NewsLoading.jsx';
 
 const NewsList = () => {
   const [news, setNews] = useState([]);
@@ -54,8 +55,7 @@ const NewsList = () => {
           img={article.img || 'default-image-url.jpg'}
         />
       ))}
-      {loading && <p>Loading more news...</p>}
-      {!hasMore && <p>No more news available</p>}
+      <NewsLoading />
     </div>
   );
 };
