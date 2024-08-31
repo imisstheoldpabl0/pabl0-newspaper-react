@@ -26,12 +26,12 @@ const NewsList = () => {
   }, [page, loading, hasMore]);
 
   useEffect(() => {
-    fetchNews();
-  }, [fetchNews]);
+    fetchNews();  // Initial fetch
+  }, []);  // Only on component mount
 
   const handleScroll = useCallback(() => {
     if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 200 && hasMore && !loading) {
-      fetchNews();
+      fetchNews();  // Fetch more news when scrolled near the bottom
     }
   }, [fetchNews, hasMore, loading]);
 
@@ -51,7 +51,7 @@ const NewsList = () => {
           key={index}
           date={article.date}
           headline={article.headline}
-          img={article.img}
+          img={article.img || 'default-image-url.jpg'}
         />
       ))}
       {loading && <p>Loading more news...</p>}
