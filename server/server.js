@@ -42,8 +42,8 @@ app.get('/api/news', async (req, res) => {
     const countResult = await pool.query('SELECT COUNT(*) FROM news_articles');
     const count = parseInt(countResult.rows[0].count);
 
-    console.log(count);
-    console.log("hello");
+    // console.log(count);
+    // console.log("hello");
 
     // Get the articles for the current page
     const articlesResult = await pool.query(

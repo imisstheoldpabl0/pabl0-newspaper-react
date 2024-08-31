@@ -1,4 +1,7 @@
 /* NewsList.css */
+.news-list-div {
+  
+}
 .news-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
