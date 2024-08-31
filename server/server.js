@@ -2,9 +2,12 @@
 const express = require('express');
 const pool = require('./db');
 require('dotenv').config();
+const cors = require('cors')
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+app.use(cors());
 
 // Middleware to parse JSON bodies
 app.use(express.json());
