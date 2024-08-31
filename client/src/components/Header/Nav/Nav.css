@@ -1,0 +1,26 @@
+nav {
+    display: flex;
+    align-items: center;
+    height: auto;
+    border-bottom: 1px solid #eaeaea;
+    flex-direction: column;
+    width: 650px;
+
+    ul {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style: none;
+        padding-inline-start: 0px;
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+
+        li {
+            margin: 2px 16px 2px 16px;
+            
+            a {
+                color: black;
+            }
+        }
+    }
+}
