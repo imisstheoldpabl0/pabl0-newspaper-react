@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "install-all": "npm install && npm install --prefix client && npm install --prefix server",
-    "deploy": "npm install-all & npm run start-server & npm run build --prefix client",
+    "deploy": "npm run install-all & npm run start-server & npm run build --prefix client",
     "test-start": "npm run start --prefix client & npm run start-server",
     "scrap": "node server/utils/scrap.js",
     "start": "npm run start-all",
