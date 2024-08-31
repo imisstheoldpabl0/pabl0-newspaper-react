@@ -1,5 +1,6 @@
 import './App.css'
-import Header from './components/Header/Header';
+import { BrowserRouter } from 'react-router-dom'
+import Header from './components/Header/Header.jsx';
 import Main from './components/Main/Main';
 import AdSense from './components/AdSense/AdSense';
 
@@ -10,13 +11,11 @@ function App() {
   return (
     <>
       <div className="app">
-        <AdSense
-          client={client}
-          slot={slot}
-          format="auto"
-          responsive="true" />
-        <Header />
-        <Main />
+        <AdSense/>
+        <BrowserRouter>
+          <Header />
+          <Main />
+        </BrowserRouter>
       </div>
     </>
   );
