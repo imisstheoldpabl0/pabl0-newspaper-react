@@ -37,7 +37,6 @@ const NewsList = ({ city, myLat, myLong }) => {
             key={index}
             date={article.date}
             headline={article.headline}
-            body={article.body}
             img={article.img}
           />
         );
