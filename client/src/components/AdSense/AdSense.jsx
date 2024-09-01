@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import dotenv from 'dotenv'
-dotenv.config();
+// import dotenv from 'dotenv'
+// dotenv.config();
 
 function AdSense() {
   useEffect(() => {
