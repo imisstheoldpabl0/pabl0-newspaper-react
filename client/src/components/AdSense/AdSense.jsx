@@ -1,33 +1,28 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
-const AdSense = () => {
+function AdSense() {
   useEffect(() => {
-    // Ensure that the adsbygoogle script is loaded
-    const loadAds = () => {
-      if (window.adsbygoogle) {
-        window.adsbygoogle.push({});
-      }
-    };
+    const script = document.createElement('script');
+    script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+    script.async = true;
+    script.setAttribute('data-ad-client', 'YOUR_ADSENSE_CLIENT_ID');
+    document.body.appendChild(script);
 
-    // Load ads script if it hasn't been loaded already
-    if (!document.querySelector('script[src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"]')) {
-      const script = document.createElement('script');
-      script.src = '//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-      script.async = true;
-      document.body.appendChild(script);
-      script.onload = loadAds;
-    } else {
-      loadAds();
-    }
+    return () => {
+      document.body.removeChild(script);
+    };
   }, []);
 
   return (
-    <ins className="adsbygoogle"
-         style={{ display: 'block' }}
-         data-ad-client="ca-pub-0000000000000000"  // Test Ad Client ID
-         data-ad-slot="0000000000"  // Test Ad Slot ID
-         data-ad-format="auto"></ins>
+    <ins
+      className="adsbygoogle"
+      style={{ display: 'block' }}
+      data-ad-client="YOUR_ADSENSE_CLIENT_ID"
+      data-ad-slot="YOUR_AD_SLOT_ID"
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+    />
   );
-};
+}
 
 export default AdSense;
