@@ -67,6 +67,16 @@ app.get('/api/news', async (req, res) => {
   }
 });
 
+// Optional: Serve static files (like a React app)
+// If you're deploying just an API, you can skip this.
+// If your app serves a frontend, ensure your build files are in a directory like 'client/build'.
+// Uncomment the lines below if serving static files:
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'client/build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
