@@ -30,7 +30,7 @@ const scrap = async (url) => {
 
     try {
         console.log("Opening the browser...");
-        const browser = await puppeteer.launch({ headless: true })
+        const browser = await puppeteer.launch({ headless: false })
         const page = await browser.newPage();
         await page.goto(url);
 
@@ -49,7 +49,7 @@ const scrap = async (url) => {
 
         // choose how many links to extract (urls.length selects all found links)
         // const urls2 = urls.slice(0, urls.length);
-        const urlsToProcess = urls.slice(0, 200);
+        const urlsToProcess = urls.slice(0, 2);
         console.log(`${urlsToProcess.length} selected links`);
 
         // iterate over the found links list and edit each object to clean up the information received
