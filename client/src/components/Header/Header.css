@@ -1,4 +1,9 @@
-header {
+.header {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    height: auto;
 }
