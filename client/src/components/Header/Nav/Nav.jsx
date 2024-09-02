@@ -6,6 +6,8 @@ const Nav = () => {
   return <nav>
     <ul>
       <li className="nav-link active"><Link to='/'>Home</Link></li>
+      <li className="nav-link active"><Link to='/'>Home</Link></li>
+      <li className="nav-link active"><Link to='/'>Home</Link></li>
     </ul>
   </nav>;
 };
