@@ -9,7 +9,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: `postgres://xadqsnsp:h9fuaarkeRQM9mPMqPV24wanM9U7svqQ@trumpet.db.elephantsql.com/xadqsnsp`, // Replace with your backend API's base URL
+        target: `http://localhost:${process.env.VITE_PORT}`, // Replace with your backend API's base URL
         changeOrigin: true,
         secure: false,
       },
