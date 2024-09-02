@@ -2,21 +2,26 @@ nav {
     display: flex;
     align-items: center;
     flex-direction: row;
+    align-content: space-between;
     font-family: "Roboto",sans-serif;
 
     ul {
-        border: solid 2px black;
         display: flex;
-
+        justify-content: space-between;
+        align-items: center;
         list-style: none;
         padding-inline-start: 0px;
         
         li {
-            
+            margin: 2px 24px 2px 24px;
+            width: 70px;
+            border-bottom: solid;
+            border-width: 4px;
+
             
             a {
                 display: flex;
-                border: solid 2px black;
+                justify-content: flex-start;
                 color: black;
             }
         }
