@@ -1,9 +1,9 @@
 .header {
     display: flex;
     justify-content: center;
-    flex-direction: row;
-
-    font-family: "Roboto",sans-serif;
-    font-size: 11.5px;
-    font-weight: bold;
+    align-items: center;
+    align-content: center;
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    height: auto;
 }
