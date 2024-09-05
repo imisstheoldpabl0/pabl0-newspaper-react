@@ -9,10 +9,21 @@ const extractNewsData = async (url, browser) => {
         const page = await browser.newPage()
         await page.goto(url)
 
-        newsData['date'] = await page.$eval(".date", date => date.innerHTML);
-        newsData['headline'] = await page.$eval(".font-caladea-regular", headline => headline.innerText);
-        newsData['body'] = await page.$eval(".body", p => p.innerText);
-        newsData['img'] = await page.$eval(".story-promo figure img", img => img.src);
+        // let dashSplit = this.document.location.href.split('/')
+        // let siteName = dashSplit[3]
+
+        // document.querySelector(".ellipsis > .ellipsis").innerText
+        // document.querySelector(".story-heading").innerText
+        // document.querySelector(".story-content").innerText
+        // document.querySelector(".fluidbox__wrap > img").src
+        // this.document.location.href
+
+        newsData['date'] = await page.$eval(".ellipsis > .ellipsis", date => date.innerText);
+        newsData['title'] = await page.$eval(".story-heading", title => title.innerText);
+        newsData['body'] = await page.$eval(".story-content", p => p.innerText);
+        newsData['img'] = await page.$eval(".story-header figure img", img => img.src);
+        newsData['url'] = await page.evaluate(() => document.location.href);
+        //newsData['category'] = await page.evaluate(() => document.location.href.split('/')[3]);
 
         await page.close();
         return newsData;
@@ -30,14 +41,14 @@ const scrap = async (url) => {
 
     try {
         console.log("Opening the browser...");
-        const browser = await puppeteer.launch({ headless: false })
+        const browser = await puppeteer.launch({ headless: true })
         const page = await browser.newPage();
         await page.goto(url);
 
         console.log(`Navigating to ${url}...`);
 
         // find all links with this selector
-        const webElement = (".story-card-entire-link")
+        const webElement = (".card-title > a")
 
         // save all urls by mapping over all elements that meet the selector characteristics
         const urls = await page.$$eval(`${webElement}`, rest => rest.map(a => a.href));
@@ -49,7 +60,7 @@ const scrap = async (url) => {
 
         // choose how many links to extract (urls.length selects all found links)
         // const urls2 = urls.slice(0, urls.length);
-        const urlsToProcess = urls.slice(0, 2);
+        const urlsToProcess = urls.slice(0, 5);
         console.log(`${urlsToProcess.length} selected links`);
 
         // iterate over the found links list and edit each object to clean up the information received
@@ -59,20 +70,13 @@ const scrap = async (url) => {
                 Object.defineProperties(article, {
                     date: {
                         value: (article.date || 'N/A')
-                        .replace(/,/g, ""), // line skip --> space char
+                            .replace(/,/g, ""), // line skip --> space char
                         writable: false,
                     },
-                    headline: {
-                        value: article.headline || 'N/A',
+                    title: {
+                        value: (article.title || 'N/A'),
                         writable: false,
                     },
-                    /* keypoints: {
-                        value: (article.keypoints || 'N/A')
-                            .replace(/ZINGER KEY POINTS/, "")
-                            .replace(/\n/g, " ")
-                            .replace(/’/g, "'"),
-                        writable: false,
-                    }, */
                     body: {
                         value: (article.body || 'N/A')
                             .replace(/\n/g, " ") // line skip --> space char
@@ -86,9 +90,21 @@ const scrap = async (url) => {
                             // .replace(/;/g, "") // semi-column ( ; ) --> normal space char
                             .replace(/|/g, "") // semi-column ( | ) --> normal space char
                             .replace(/  /g, " "), // double space ( | ) --> single space char
-                        // .replace(/,/g, " ") // comma ( , ) --> nothing
+                            // .replace(/,/g, " ") // comma ( , ) --> nothing
                         // .replace(/./g, " ") // period ( . ) --> nothing
                         // .replace(/'/g, " "), // regular apostrophe ( ' ) --> nothing
+                        writable: false,
+                    },
+                    img: {
+                        value: (article.img || 'N/A'),
+                        writable: false,
+                    },
+                    url: {
+                        value: (article.url || 'N/A'),
+                        writable: false,
+                    },
+                    category: {
+                        value: (article.category || 'N/A'),
                         writable: false,
                     },
                 })
@@ -103,12 +119,12 @@ const scrap = async (url) => {
         // close the browser instance
         await browser.close()
 
-    // return the scrapedData array with all of the data from each of the articles
-    return scrapedData;
+        // return the scrapedData array with all of the data from each of the articles
+        return scrapedData;
 
-} catch (err) {
-    console.log("Error:", err);
-}
+    } catch (err) {
+        console.log("Error:", err);
+    }
 }
 
 // Function to save data to JSON file
@@ -125,7 +141,7 @@ const saveToJSON = (data, filename) => {
 
 exports.scrap = scrap;
 
-scrap("https://www.lavoz.com.ar")
+scrap("https://www.diariodemocracia.com/policiales/")
     .then(data => {
         saveToJSON(data, 'scraped-news.json');
     });
