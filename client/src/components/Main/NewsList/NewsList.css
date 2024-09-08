@@ -22,7 +22,7 @@
     width: 250px;
     overflow: hidden;
 
-    .headline {
+    .title {
         font-size: 18px;
         text-align: left;
         justify-content:flex-start;
