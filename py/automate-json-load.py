@@ -8,7 +8,7 @@ load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Load JSON data
-with open('../server/utils/scraped-news.json', 'r', encoding='utf-8') as f:
+with open('../server/utils/scraped-news-mas-deportivo.json', 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 # Connect to your ElephantSQL database
@@ -18,18 +18,16 @@ cur = conn.cursor()
 # Insert each record
 for article in data:
     cur.execute("""
-        INSERT INTO news_articles (publication_date, title, body, featured_image_url, article_url) VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO news_articles (publication_date, title, body, featured_image_url, article_url, id_category) VALUES (%s, %s, %s, %s, %s, %s)
     """, (
         article['publication_date'],
         article['title'],
         article['body'],
         article['featured_image_url'],
-        article['article_url']
+        article['article_url'],
+        article['category_id']
     ))
-    cur.execute("""
-        INSERT INTO news_categories (category) VALUES (%s)
-    """, (article['category'],))
-    
+    print(f"Inserted article: {article['title']}")
 # Commit the transaction and close the connection
 conn.commit()
 cur.close()

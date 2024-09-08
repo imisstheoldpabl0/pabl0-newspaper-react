@@ -23,7 +23,30 @@ const extractNewsData = async (url, browser) => {
         newsData['body'] = await page.$eval(".story-content", p => p.innerText);
         newsData['featured_image_url'] = await page.$eval(".story-header figure img", img => img.src);
         newsData['article_url'] = await page.evaluate(() => document.location.href);
-        newsData['category'] = await page.evaluate(() => document.location.href.split('/')[3]);
+        // newsData['category'] = await page.evaluate(() => document.location.href.split('/')[3]);
+
+        let categoryName = await page.evaluate(() => document.location.href.split('/')[3]);
+        switch (categoryName) {
+            case 'policiales':
+                categoryId = 1;
+                break;
+            case 'provinciales':
+                categoryId = 2;
+                break;
+            case 'nacionales':
+                categoryId = 3;
+                break;
+            case 'internacionales':
+                categoryId = 4;
+                break;
+            case 'mas-deportivo':
+                categoryId = 5;
+                break;
+            default:
+                categoryId = 0; // Use 0 or another value for uncategorized or unknown categories
+        }
+
+        newsData['category_id'] = categoryId;
 
         await page.close();
         return newsData;
@@ -60,7 +83,7 @@ const scrap = async (url) => {
 
         // choose how many links to extract (urls.length selects all found links)
         // const urls2 = urls.slice(0, urls.length);
-        const urlsToProcess = urls.slice(0, 5);
+        const urlsToProcess = urls.slice(0, urls.length);
         console.log(`${urlsToProcess.length} selected links`);
 
         // iterate over the found links list and edit each object to clean up the information received
@@ -74,7 +97,7 @@ const scrap = async (url) => {
                     },
                     title: {
                         value: (article.title || 'N/A')
-                            .replace(/\"/g, ""), // line skip --> space char
+                            .replace(/\"/g, ""), // line skip --> no char
                         writable: false,
                     },
                     body: {
@@ -90,7 +113,7 @@ const scrap = async (url) => {
                             // .replace(/;/g, "") // semi-column ( ; ) --> normal space char
                             .replace(/|/g, "") // semi-column ( | ) --> normal space char
                             .replace(/  /g, " "), // double space ( | ) --> single space char
-                            // .replace(/,/g, " ") // comma ( , ) --> nothing
+                        // .replace(/,/g, " ") // comma ( , ) --> nothing
                         // .replace(/./g, " ") // period ( . ) --> nothing
                         // .replace(/'/g, " "), // regular apostrophe ( ' ) --> nothing
                         writable: false,
@@ -141,7 +164,7 @@ const saveToJSON = (data, filename) => {
 
 exports.scrap = scrap;
 
-scrap("https://www.diariodemocracia.com/policiales/")
+scrap("https://www.diariodemocracia.com/mas-deportivo/")
     .then(data => {
-        saveToJSON(data, 'scraped-news.json');
+        saveToJSON(data, 'scraped-news-mas-deportivo.json');
     });
