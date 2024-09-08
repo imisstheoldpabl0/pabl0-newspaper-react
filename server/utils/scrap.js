@@ -18,12 +18,12 @@ const extractNewsData = async (url, browser) => {
         // document.querySelector(".fluidbox__wrap > img").src
         // this.document.location.href
 
-        newsData['date'] = await page.$eval(".ellipsis > .ellipsis", date => date.innerText);
+        newsData['publication_date'] = await page.$eval('.ellipsis.ellipsis[itemprop="datePublished"]', element => element.getAttribute('content'));
         newsData['title'] = await page.$eval(".story-heading", title => title.innerText);
         newsData['body'] = await page.$eval(".story-content", p => p.innerText);
-        newsData['img'] = await page.$eval(".story-header figure img", img => img.src);
-        newsData['url'] = await page.evaluate(() => document.location.href);
-        //newsData['category'] = await page.evaluate(() => document.location.href.split('/')[3]);
+        newsData['featured_image_url'] = await page.$eval(".story-header figure img", img => img.src);
+        newsData['article_url'] = await page.evaluate(() => document.location.href);
+        newsData['category'] = await page.evaluate(() => document.location.href.split('/')[3]);
 
         await page.close();
         return newsData;
@@ -68,13 +68,13 @@ const scrap = async (url) => {
             const article = await extractNewsData(link, browser);
             if (!article.error) {
                 Object.defineProperties(article, {
-                    date: {
-                        value: (article.date || 'N/A')
-                            .replace(/,/g, ""), // line skip --> space char
+                    publication_date: {
+                        value: (article.publication_date || 'N/A'),
                         writable: false,
                     },
                     title: {
-                        value: (article.title || 'N/A'),
+                        value: (article.title || 'N/A')
+                            .replace(/\"/g, ""), // line skip --> space char
                         writable: false,
                     },
                     body: {
@@ -95,12 +95,12 @@ const scrap = async (url) => {
                         // .replace(/'/g, " "), // regular apostrophe ( ' ) --> nothing
                         writable: false,
                     },
-                    img: {
-                        value: (article.img || 'N/A'),
+                    featured_image_url: {
+                        value: (article.featured_image_url || 'N/A'),
                         writable: false,
                     },
-                    url: {
-                        value: (article.url || 'N/A'),
+                    article_url: {
+                        value: (article.article_url || 'N/A'),
                         writable: false,
                     },
                     category: {

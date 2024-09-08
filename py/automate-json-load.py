@@ -1,4 +1,3 @@
-
 import os
 import json
 import psycopg2
@@ -19,14 +18,18 @@ cur = conn.cursor()
 # Insert each record
 for article in data:
     cur.execute("""
-        INSERT INTO news_articles (date, headline, body, img) VALUES (%s, %s, %s, %s)
+        INSERT INTO news_articles (publication_date, title, body, featured_image_url, article_url) VALUES (%s, %s, %s, %s, %s)
     """, (
-        article['date'],
-        article['headline'],
+        article['publication_date'],
+        article['title'],
         article['body'],
-        article['img']
+        article['featured_image_url'],
+        article['article_url']
     ))
-
+    cur.execute("""
+        INSERT INTO news_categories (category) VALUES (%s)
+    """, (article['category'],))
+    
 # Commit the transaction and close the connection
 conn.commit()
 cur.close()
