@@ -6,7 +6,7 @@ const NewsItem = ({ date, title, img }) => {
   const dateObj = new Date(date);
   
   // Format the date as desired (e.g., "Month Day, Year")
-  const formattedDate = dateObj.toLocaleDateString('en-US', {
+  const formattedDate = dateObj.toLocaleDateString('es-ES', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
