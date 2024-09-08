@@ -50,7 +50,7 @@ app.get('/api/news', async (req, res) => {
 
     // Get the articles for the current page
     const articlesResult = await pool.query(
-      'SELECT * FROM news_articles ORDER BY date DESC LIMIT $1 OFFSET $2',
+      'SELECT * FROM news_articles ORDER BY created_at DESC LIMIT $1 OFFSET $2',
       [limit, offset]
     );
 

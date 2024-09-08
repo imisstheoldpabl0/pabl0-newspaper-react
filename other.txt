@@ -1,0 +1,6 @@
+categories:
+    policiales = 1
+    provinciales = 2
+    nacionales = 3
+    internacionales = 4
+    mas-deportivo = 5

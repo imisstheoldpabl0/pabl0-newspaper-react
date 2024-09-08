@@ -18,6 +18,7 @@ const NewsList = () => {
     setLoading(true);
     try {
       const response = await axios.get(`/api/news?page=${page}&limit=10`);
+      console.log(response.data);
       setNews((prevNews) => [...prevNews, ...response.data.articles]); // Añade las nuevas noticias a las existentes
       setHasMore(response.data.articles.length > 0); // Verifica si hay que cargar más noticias
       setPage((prevPage) => prevPage + 1); // Suma la página
@@ -53,9 +54,9 @@ const NewsList = () => {
       {news.map((article, index) => (
         <NewsItem
           key={index}
-          date={article.date}
-          headline={article.headline}
-          img={article.img || 'default-image-url.jpg'}
+          date={article.publication_date}
+          title={article.title}
+          img={article.featured_image_url || 'default-image-url.jpg'}
         />
       ))}
       <NewsLoading />

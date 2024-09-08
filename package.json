@@ -9,8 +9,8 @@
     "scrap": "node server/utils/scrap.js",
     "start": "npm run start-all",
     "start-all": "npm run start-client & npm run start-server",
-    "start-client": "npm start --prefix client",
-    "start-server": "npm start --prefix server",
+    "client": "npm start --prefix client",
+    "server": "npm start --prefix server",
     "setup-and-start": "npm run install-all && npm start"
   },
   "dependencies": {
