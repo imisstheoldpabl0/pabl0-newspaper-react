@@ -1,68 +1,95 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import NewsItem from './NewsItem/NewsItem.jsx';
+import PolicialesItem from './PolicialesItem/PolicialesItem.jsx';
 import './NewsList.css';
 import NewsLoading from './NewsLoading/NewsLoading.jsx';
-import PolicialesItem from '../PolicialesList/PolicialesItem/PolicialesItem.jsx';
+
 const NewsList = () => {
-  const [news, setNews] = useState([]); // Guarda lista de noticias
-  const [page, setPage] = useState(1); // Guarda el numero de pag
-  const [loading, setLoading] = useState(false); // Indica si se esta cargando contenido
-  const [hasMore, setHasMore] = useState(true); // Indica si hay mas noticias por cargar
+  const [news, setNews] = useState({});
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
-  const category = 1;
+  const getCategoryName = (categoryId) => {
+    const categories = {
+      '1': 'Policiales',
+      '2': 'Provinciales',
+      '3': 'Nacionales',
+      '4': 'Internacionales',
+      '5': 'Más Deportivo'
+    };
+    return categories[categoryId] || 'Unknown Category';
+  };
 
-  // Obtiene las noticias desde la API
   const fetchNews = useCallback(async () => {
-
     if (loading || !hasMore) return;
 
     setLoading(true);
     try {
-      const response = await axios.get(`/api/news/${category}?page=${page}&limit=10`);
-      console.log(response.data);
-      setNews((prevNews) => [...prevNews, ...response.data.articles]); // Añade las nuevas noticias a las existentes
-      setHasMore(response.data.articles.length > 0); // Verifica si hay que cargar más noticias
-      setPage((prevPage) => prevPage + 1); // Suma la página
+      const response = await axios.get(`/api/news?page=${page}&limit=10`);
+      const newArticles = response.data.articles;
+      console.log(newArticles);
+
+      setNews(prevNews => {
+        const updatedNews = { ...prevNews };
+        newArticles.forEach(article => {
+          if (!updatedNews[article.id_category]) {
+            updatedNews[article.id_category] = [];
+          }
+          if (updatedNews[article.id_category].length < 2) {
+            updatedNews[article.id_category].push(article);
+          }
+        });
+        return updatedNews;
+      });
+
+      setHasMore(response.data.currentPage < response.data.totalPages);
+      setPage(prevPage => prevPage + 1);
     } catch (error) {
       console.error('Error fetching news:', error);
     } finally {
-      setLoading(false); // Cambia el estado de loading a false una vez haya contenido
+      setLoading(false);
     }
   }, [page, loading, hasMore]);
 
-  // Muestra las noticias llamando a fetchNews()
   useEffect(() => {
-    fetchNews();  // Initial fetch
-  }, []);  // Only on component mount
+    fetchNews();
+  }, []);
 
   const handleScroll = useCallback(() => {
     if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 200 && hasMore && !loading) {
-      fetchNews();  // Verifica si el usuario ha desplazado cerca del final de la página para cargar más noticias
+      fetchNews();
     }
   }, [fetchNews, hasMore, loading]);
-
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll); // Escucha evento scroll
-    window.addEventListener('resize', handleScroll); // Escucha evento redimension
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll); // Limpia los event listeners
+      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
     };
-  }, [handleScroll]); // Solo ejecuta si cambia handleScroll()
+  }, [handleScroll]);
 
   return (
     <div className="news-list">
-      {news.map((article, index) => (
-        <PolicialesItem
-          key={index}
-          date={article.publication_date}
-          title={article.title}
-          img={article.featured_image_url || 'default-image-url.jpg'}
-          id={article.id_article}
-        />
+      {Object.entries(news).map(([categoryId, articles]) => (
+        <div key={categoryId} className="category-section">
+          <h2>{getCategoryName(categoryId)}</h2>
+          <div className="category-articles">
+            {articles.map((article, index) => (
+              <PolicialesItem
+                key={index}
+                date={article.publication_date}
+                title={article.title}
+                img={article.featured_image_url || 'default-image-url.jpg'}
+                id={article.id_article}
+                category={getCategoryName(categoryId)}
+              />
+            ))}
+          </div>
+        </div>
       ))}
-      <NewsLoading />
+      {loading && <NewsLoading />}
     </div>
   );
 };

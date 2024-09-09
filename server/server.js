@@ -41,25 +41,26 @@ app.get('/api/news', async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
 
-    // Get the total count of articles
-    const countResult = await pool.query('SELECT COUNT(*) FROM news_articles');
-    const count = parseInt(countResult.rows[0].count);
+    const categoriesResult = await pool.query('SELECT id_category, category FROM news_categories');
+    const categories = categoriesResult.rows;
 
-    // console.log(count);
-    // console.log("hello");
+    let allArticles = [];
+    for (const category of categories) {
+      const articlesResult = await pool.query(
+        'SELECT news_articles.*, news_categories.category FROM news_articles JOIN news_categories ON news_articles.id_category = news_categories.id_category WHERE news_articles.id_category = $1 ORDER BY news_articles.created_at DESC LIMIT 2',
+        [category.id_category]
+      );
+      allArticles = [...allArticles, ...articlesResult.rows];
+    }
 
-    // Get the articles for the current page
-    const articlesResult = await pool.query(
-      'SELECT * FROM news_articles ORDER BY created_at DESC LIMIT $1 OFFSET $2',
-      [limit, offset]
-    );
+    const totalCount = await pool.query('SELECT COUNT(*) FROM news_articles');
+    const count = parseInt(totalCount.rows[0].count);
 
     res.json({
       total: count,
       currentPage: page,
       totalPages: Math.ceil(count / limit),
-      articles: articlesResult.rows,
-
+      articles: allArticles,
     });
   } catch (error) {
     console.error('Error fetching news:', error);
