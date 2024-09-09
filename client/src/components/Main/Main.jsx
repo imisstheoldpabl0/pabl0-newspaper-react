@@ -1,12 +1,12 @@
 import React from "react";
-import NewsList from "./NewsList/NewsList";
 // import AdSense from "../AdSense/AdSense";
 import PolicialesList from "./PolicialesList/PolicialesList";
+import NewsList from "./NewsList/NewsList";
 
 const Main = () => {
   return (
     <section className="main">
-      <PolicialesList/>
+      <NewsList/>
     </section>
   );
 };

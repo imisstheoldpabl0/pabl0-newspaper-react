@@ -3,12 +3,14 @@ import axios from 'axios';
 import NewsItem from './NewsItem/NewsItem.jsx';
 import './NewsList.css';
 import NewsLoading from './NewsLoading/NewsLoading.jsx';
-
+import PolicialesItem from '../PolicialesList/PolicialesItem/PolicialesItem.jsx';
 const NewsList = () => {
   const [news, setNews] = useState([]); // Guarda lista de noticias
   const [page, setPage] = useState(1); // Guarda el numero de pag
   const [loading, setLoading] = useState(false); // Indica si se esta cargando contenido
   const [hasMore, setHasMore] = useState(true); // Indica si hay mas noticias por cargar
+
+  const category = 1;
 
   // Obtiene las noticias desde la API
   const fetchNews = useCallback(async () => {
@@ -17,7 +19,7 @@ const NewsList = () => {
 
     setLoading(true);
     try {
-      const response = await axios.get(`/api/news?page=${page}&limit=10`);
+      const response = await axios.get(`/api/news/${category}?page=${page}&limit=10`);
       console.log(response.data);
       setNews((prevNews) => [...prevNews, ...response.data.articles]); // Añade las nuevas noticias a las existentes
       setHasMore(response.data.articles.length > 0); // Verifica si hay que cargar más noticias
@@ -52,11 +54,12 @@ const NewsList = () => {
   return (
     <div className="news-list">
       {news.map((article, index) => (
-        <NewsItem
+        <PolicialesItem
           key={index}
           date={article.publication_date}
           title={article.title}
           img={article.featured_image_url || 'default-image-url.jpg'}
+          id={article.id_article}
         />
       ))}
       <NewsLoading />

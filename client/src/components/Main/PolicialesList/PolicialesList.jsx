@@ -15,6 +15,7 @@ const PolicialesList = () => {
     setLoading(true);
     try {
       const response = await axios.get(`/api/news/1?page=${page}&limit=10`); // 1 is the category ID for 'policiales'
+      console.log(response.data);
       setNews((prevNews) => [...prevNews, ...response.data.articles]); // Añade las nuevas noticias a las existentes
       setHasMore(response.data.articles.length > 0); // Verifica si hay que cargar más noticias
       setPage((prevPage) => prevPage + 1); // Suma la página
@@ -47,12 +48,13 @@ const PolicialesList = () => {
 
   return (
     <div className="news-list">
-      {news.map((article, index) => (
+      {news.slice(0, 2).map((article, index) => (
         <PolicialesItem
           key={index}
           date={article.publication_date}
           title={article.title}
           img={article.featured_image_url || 'default-image-url.jpg'}
+          id={article.id_article}
         />
       ))}
     </div>

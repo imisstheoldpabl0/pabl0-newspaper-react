@@ -1,7 +1,7 @@
 import React from "react";
 import "../../NewsList/NewsItem/NewsItem.css";
 
-const PolicialesItem = ({ date, title, img }) => {
+const PolicialesItem = ({ date, title, img, id }) => {
   const dateObj = new Date(date);
   const formattedDate = dateObj.toLocaleDateString('es-ES', {
     year: 'numeric',
@@ -14,6 +14,7 @@ const PolicialesItem = ({ date, title, img }) => {
       <img src={img} className='img' alt={title} />
       <h6 className='date'>{formattedDate}</h6>
       <h1 className='title'>{title}</h1>
+      <p className='description'>ID: {id}</p>
     </div>
   );
 };
