@@ -14,7 +14,7 @@ const PolicialesItem = ({ date, title, img, category }) => {
       <img src={img} className='img' alt={title} />
       <h6 className='date'>{formattedDate}</h6>
       <h1 className='title'>{title}</h1>
-      <h4 className='description'>{category}</h4>
+      <h4 className='category-name'>{category}</h4>
     </div>
   );
 };

@@ -8,13 +8,15 @@
     "provinciales-1 ad-1 nacionales-1"
     "provinciales-1 internacionales-1 internacionales-1"
     "mas-deportivo-1 mas-deportivo-1 ad-2";
+    justify-items: center;
+    align-items: center;
 }
 
 .policiales-1 {
   grid-area: policiales-1;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 .nacionales-1 {
@@ -56,9 +58,18 @@
 .ad-1 {
   grid-area: ad-1;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 12px;
+  margin: 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #000;
+  
   height: 350px;
   width: 250px;
+  margin-bottom: 2px;
   .ad-img {
     width: 250px;
     border-radius: 12px;
@@ -68,8 +79,19 @@
 
 .ad-2 {
   grid-area: ad-2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  margin: 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #000;
+
   height: 350px;
   width: 250px;
+  margin-bottom: 2px;
   .ad-img {
     width: 250px;
     border-radius: 12px;
@@ -98,6 +120,8 @@
     color: black;
     margin: 8px;
     width: 250px;
+    height: 100px;
+    overflow: hidden;
   }
 
   .date {
@@ -120,6 +144,15 @@
   .img {
     width: 250px;
     border-radius: 12px;
+  }
+
+  .category-name {
+    font-size: 12px;
+    text-align: left;
+    justify-content: flex-start;
+    color: black;
+    margin: 8px;
+    width: 250px;
   }
 }
 
