@@ -1,67 +1,136 @@
 .news-list {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  gap: 20px 20px;
+  grid-template-areas:
+    "policiales-1 policiales-1 nacionales-1"
+    "provinciales-1 ad-1 nacionales-1"
+    "provinciales-1 internacionales-1 internacionales-1"
+    "mas-deportivo-1 mas-deportivo-1 ad-2";
 }
-  
-  @media (max-width: 768px) {
-    .news-list {
-      grid-template-columns: 1fr;
-    }
-  }
-  
-  /* Optionally style the NewsItem itself here if you want consistency */
-  .news-item {
-    background-color: #f4f4f4;
-    padding: 12px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-    height: 350px;
+.policiales-1 {
+  grid-area: policiales-1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.nacionales-1 {
+  grid-area: nacionales-1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.provinciales-1 {
+  grid-area: provinciales-1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.internacionales-1 {
+  grid-area: internacionales-1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.mas-deportivo-1 {
+  grid-area: mas-deportivo-1;
+  display: flex;
+  flex-direction: row;
+}
+
+.ad-item {
+  border: 1px solid #000;
+  height: 350px;
+  width: 250px;
+}
+
+.ad-1 {
+  grid-area: ad-1;
+  display: flex;
+  align-items: center;
+  height: 350px;
+  width: 250px;
+  .ad-img {
     width: 250px;
-    overflow: hidden;
-    margin-bottom: 20px;
-
-    .title {
-        font-size: 18px;
-        text-align: left;
-        justify-content:flex-start;
-        color: black;
-        margin: 8px;
-        width: 250px;
-    }
-    
-    .date {
-      font-size: 12px;
-      text-align: left;
-      justify-content:flex-start;
-      color: black;
-      margin: 8px;
-      width: 250px;
-    }
-    
-    .body {
-        font-size: 16px;
-        width: 500px;
-        text-align: left;
-        margin: 12px;
-        color: black;
-    }
-
-    .img {
-        width: 250px;
-        border-radius: 12px;
-    }
+    border-radius: 12px;
   }
-  /* Optionally style the NewsItem itself here if you want consistency */
-  .news-loading {
-    background-color: #f4f4f4;
-    padding: 12px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.749);
+  
+}
 
-    height: 350px;
+.ad-2 {
+  grid-area: ad-2;
+  height: 350px;
+  width: 250px;
+  .ad-img {
     width: 250px;
-    overflow: hidden;
+    border-radius: 12px;
   }
+}
+
+/* Optionally style the NewsItem itself here if you want consistency */
+.news-item {
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f4f4;
+  padding: 12px;
+  margin: 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #000;
+
+  height: 350px;
+  width: 250px;
+  margin-bottom: 2px;
+
+  .title {
+    font-size: 18px;
+    text-align: left;
+    justify-content: flex-start;
+    color: black;
+    margin: 8px;
+    width: 250px;
+  }
+
+  .date {
+    font-size: 12px;
+    text-align: left;
+    justify-content: flex-start;
+    color: black;
+    margin: 8px;
+    width: 250px;
+  }
+
+  .body {
+    font-size: 16px;
+    width: 500px;
+    text-align: left;
+    margin: 12px;
+    color: black;
+  }
+
+  .img {
+    width: 250px;
+    border-radius: 12px;
+  }
+}
+
+/* Optionally style the NewsItem itself here if you want consistency */
+.news-loading {
+  background-color: #f4f4f4;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.749);
+
+  height: 350px;
+  width: 250px;
+  overflow: hidden;
+}

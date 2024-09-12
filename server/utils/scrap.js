@@ -166,5 +166,5 @@ exports.scrap = scrap;
 
 scrap("https://www.diariodemocracia.com/mas-deportivo/")
     .then(data => {
-        saveToJSON(data, 'scraped-news-mas-deportivo.json');
+        saveToJSON(data, 'scraped-news-mas-deportivo2.json');
     });

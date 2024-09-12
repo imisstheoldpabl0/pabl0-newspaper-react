@@ -3,6 +3,7 @@ import axios from 'axios';
 import PolicialesItem from './PolicialesItem/PolicialesItem.jsx';
 import './NewsList.css';
 import NewsLoading from './NewsLoading/NewsLoading.jsx';
+import AdSense from '../../AdSense/AdSense.jsx';
 
 const NewsList = () => {
   const [news, setNews] = useState({});
@@ -28,7 +29,6 @@ const NewsList = () => {
     try {
       const response = await axios.get(`/api/news?page=${page}&limit=10`);
       const newArticles = response.data.articles;
-      console.log(newArticles);
 
       setNews(prevNews => {
         const updatedNews = { ...prevNews };
@@ -36,9 +36,7 @@ const NewsList = () => {
           if (!updatedNews[article.id_category]) {
             updatedNews[article.id_category] = [];
           }
-          if (updatedNews[article.id_category].length < 2) {
-            updatedNews[article.id_category].push(article);
-          }
+          updatedNews[article.id_category].push(article);
         });
         return updatedNews;
       });
@@ -61,6 +59,7 @@ const NewsList = () => {
       fetchNews();
     }
   }, [fetchNews, hasMore, loading]);
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleScroll);
@@ -70,25 +69,29 @@ const NewsList = () => {
     };
   }, [handleScroll]);
 
+  const renderCategoryNews = (categoryId, limit = 2) => {
+    const articles = news[categoryId] || [];
+    return articles.slice(0, limit).map((article, index) => (
+      <PolicialesItem
+        key={index}
+        date={article.publication_date}
+        title={article.title}
+        img={article.featured_image_url || 'default-image-url.jpg'}
+        id={article.id_article}
+        category={getCategoryName(categoryId)}
+      />
+    ));
+  };
+
   return (
     <div className="news-list">
-      {Object.entries(news).map(([categoryId, articles]) => (
-        <div key={categoryId} className="category-section">
-          <h2>{getCategoryName(categoryId)}</h2>
-          <div className="category-articles">
-            {articles.map((article, index) => (
-              <PolicialesItem
-                key={index}
-                date={article.publication_date}
-                title={article.title}
-                img={article.featured_image_url || 'default-image-url.jpg'}
-                id={article.id_article}
-                category={getCategoryName(categoryId)}
-              />
-            ))}
-          </div>
-        </div>
-      ))}
+      <div className="policiales-1 item">{renderCategoryNews('1', 2)}</div>
+      <div className="nacionales-1 item">{renderCategoryNews('3', 2)}</div>
+      <div className="provinciales-1 item">{renderCategoryNews('2', 2)}</div>
+      <div className="internacionales-1 item">{renderCategoryNews('4', 2)}</div>
+      <div className="mas-deportivo-1 item">{renderCategoryNews('5', 2)}</div>
+      <div className="ad-1 ad-item"><AdSense /></div>
+      <div className="ad-2 ad-item"><AdSense /></div>
       {loading && <NewsLoading />}
     </div>
   );
