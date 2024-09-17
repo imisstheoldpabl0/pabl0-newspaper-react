@@ -1,7 +1,7 @@
 import React from "react";
 import "../NewsList.css";
 
-const PolicialesItem = ({ date, title, img, category }) => {
+const CategoryItem = ({ date, title, img, category }) => {
   const dateObj = new Date(date);
   const formattedDate = dateObj.toLocaleDateString('es-ES', {
     year: 'numeric',
@@ -19,4 +19,4 @@ const PolicialesItem = ({ date, title, img, category }) => {
   );
 };
 
-export default PolicialesItem;
+export default CategoryItem;
