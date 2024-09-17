@@ -5,11 +5,8 @@ import './NewsList.css';
 import NewsLoading from './NewsLoading/NewsLoading.jsx';
 import AdSense from '../../AdSense/AdSense.jsx';
 
-const NewsList = () => {
+const NewsList = ({ page, setLoading, setHasMore }) => {
   const [news, setNews] = useState({});
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
 
   const getCategoryName = (categoryId) => {
     const categories = {
@@ -23,8 +20,6 @@ const NewsList = () => {
   };
 
   const fetchNews = useCallback(async () => {
-    if (loading || !hasMore) return;
-
     setLoading(true);
     try {
       const response = await axios.get(`/api/news?page=${page}&limit=10`);
@@ -42,38 +37,22 @@ const NewsList = () => {
       });
 
       setHasMore(response.data.currentPage < response.data.totalPages);
-      setPage(prevPage => prevPage + 1);
     } catch (error) {
       console.error('Error fetching news:', error);
     } finally {
       setLoading(false);
     }
-  }, [page, loading, hasMore]);
+  }, [page, setLoading, setHasMore]);
 
   useEffect(() => {
     fetchNews();
-  }, []);
-
-  const handleScroll = useCallback(() => {
-    if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 200 && hasMore && !loading) {
-      fetchNews();
-    }
-  }, [fetchNews, hasMore, loading]);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
-  }, [handleScroll]);
+  }, [fetchNews]);
 
   const renderCategoryNews = (categoryId, limit = 2) => {
     const articles = news[categoryId] || [];
     return articles.slice(0, limit).map((article, index) => (
       <PolicialesItem
-        key={index}
+        key={`${page}-${categoryId}-${index}`}
         date={article.publication_date}
         title={article.title}
         img={article.featured_image_url || 'default-image-url.jpg'}
@@ -92,7 +71,6 @@ const NewsList = () => {
       <div className="mas-deportivo-1 item">{renderCategoryNews('5', 2)}</div>
       <div className="ad-1 ad-item"><AdSense /></div>
       <div className="ad-2 ad-item"><AdSense /></div>
-      {loading && <NewsLoading />}
     </div>
   );
 };

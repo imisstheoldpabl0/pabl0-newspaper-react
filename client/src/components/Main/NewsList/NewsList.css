@@ -1,7 +1,7 @@
 .news-list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto auto;
   gap: 20px 20px;
   grid-template-areas:
     "policiales-1 policiales-1 nacionales-1"
@@ -52,7 +52,7 @@
 .ad-item {
   border: 1px solid #000;
   height: 350px;
-  width: 250px;
+  width: 350px;
 }
 
 .ad-1 {
@@ -68,7 +68,7 @@
   border: 1px solid #000;
   
   height: 350px;
-  width: 250px;
+  width: 350px;
   margin-bottom: 2px;
   .ad-img {
     width: 250px;
@@ -90,10 +90,10 @@
   border: 1px solid #000;
 
   height: 350px;
-  width: 250px;
+  width: 350px;
   margin-bottom: 2px;
   .ad-img {
-    width: 250px;
+    width: 350px;
     border-radius: 12px;
   }
 }
@@ -109,8 +109,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid #000;
 
-  height: 350px;
-  width: 250px;
+  height: 400px;
+  width: 350px;
   margin-bottom: 2px;
 
   .title {
@@ -142,7 +142,7 @@
   }
 
   .img {
-    width: 250px;
+    width: 350px;
     border-radius: 12px;
   }
 
