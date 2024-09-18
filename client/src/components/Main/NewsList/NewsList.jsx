@@ -22,7 +22,7 @@ const NewsList = ({ page, setLoading, setHasMore }) => {
   const fetchNews = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`/api/news?page=${page}&limit=10`);
+      const response = await axios.get(`/api/news?page=${page}`);
       const newArticles = response.data.articles;
       console.log(newArticles);
 
