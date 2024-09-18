@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import CategoryItem from './CategoryItem/CategoryItem.jsx';
 import './NewsList.css';
-import NewsLoading from './NewsLoading/NewsLoading.jsx';
+// import NewsLoading from './NewsLoading/NewsLoading.jsx';
 import AdSense from '../../AdSense/AdSense.jsx';
 
 const NewsList = ({ page, setLoading, setHasMore }) => {

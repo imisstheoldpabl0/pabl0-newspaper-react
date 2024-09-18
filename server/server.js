@@ -47,8 +47,8 @@ app.get('/api/news', async (req, res) => {
     let allArticles = [];
     for (const category of categories) {
       const articlesResult = await pool.query(
-        'SELECT news_articles.*, news_categories.category FROM news_articles JOIN news_categories ON news_articles.id_category = news_categories.id_category WHERE news_articles.id_category = $1 ORDER BY news_articles.created_at DESC LIMIT 2',
-        [category.id_category]
+        'SELECT news_articles.*, news_categories.category FROM news_articles JOIN news_categories ON news_articles.id_category = news_categories.id_category WHERE news_articles.id_category = $1 ORDER BY news_articles.created_at DESC OFFSET $2 LIMIT $3',
+        [category.id_category, offset, 2]
       );
       allArticles = [...allArticles, ...articlesResult.rows];
     }
