@@ -58,6 +58,7 @@ const NewsList = ({ page, setLoading, setHasMore }) => {
         img={article.featured_image_url || 'default-image-url.jpg'}
         id={article.id_article}
         category={getCategoryName(categoryId)}
+        url={article.article_url}
       />
     ));
   };

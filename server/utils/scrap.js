@@ -164,7 +164,7 @@ const saveToJSON = (data, filename) => {
 
 exports.scrap = scrap;
 
-scrap("https://www.diariodemocracia.com/mas-deportivo/")
+scrap("https://www.diariodemocracia.com/internacionales/")
     .then(data => {
-        saveToJSON(data, 'scraped-news-mas-deportivo2.json');
+        saveToJSON(data, 'scraped-news-internacionales3.json');
     });

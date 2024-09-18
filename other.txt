@@ -4,3 +4,26 @@ categories:
     nacionales = 3
     internacionales = 4
     mas-deportivo = 5
+
+number of articles in database per category:
+    policiales = 15 -> 7pg
+    provinciales = 12 -> 6pg
+    nacionales = 14 -> 7pg
+    internacionales = 13 -> 6pg
+    mas-deportivo = 15 -> 7pg
+
+Check number of articles per category:
+
+    SELECT 
+    nc.category,
+nc.id_category,
+    COUNT(na.id_article) as article_count
+FROM 
+    news_categories nc
+LEFT JOIN 
+    news_articles na ON nc.id_category = na.id_category
+GROUP BY 
+    nc.id_category, nc.category
+ORDER BY 
+id_category;
+

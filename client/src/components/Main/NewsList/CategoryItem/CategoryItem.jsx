@@ -1,7 +1,7 @@
 import React from "react";
 import "../NewsList.css";
 
-const CategoryItem = ({ date, title, img, category }) => {
+const CategoryItem = ({ date, title, img, category, url }) => {
   const dateObj = new Date(date);
   const formattedDate = dateObj.toLocaleDateString('es-ES', {
     year: 'numeric',
@@ -15,6 +15,7 @@ const CategoryItem = ({ date, title, img, category }) => {
       <h6 className='date'>{formattedDate}</h6>
       <h1 className='title'>{title}</h1>
       <h4 className='category-name'>{category}</h4>
+      <a href={url} className='read-more'>Leer más</a>
     </div>
   );
 };
