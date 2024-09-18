@@ -8,7 +8,7 @@ load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Load JSON data
-with open('../server/utils/scraped-news-mas-deportivo2.json', 'r', encoding='utf-8') as f:
+with open('../server/utils/scraped-news-internacionales3.json', 'r', encoding='utf-8') as f:
     data = json.load(f)
 
 # Connect to your ElephantSQL database
