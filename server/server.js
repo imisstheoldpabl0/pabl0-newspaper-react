@@ -25,7 +25,7 @@ app.get('/api/test-db', async (req, res) => {
 
 app.get('/api/all-news', async (req, res) => {
   try {
-    const result = await pool.query('select * from news_articles order by id limit 5');
+    const result = await pool.query('select * from news_articles order by id_article limit 5');
     res.json(result.rows);
   } catch (err) {
     console.error(err);
@@ -79,10 +79,9 @@ app.get('/api/news/:category', async (req, res) => {
     // Get the total count of articles for the specific category
     const countResult = await pool.query('SELECT COUNT(*) FROM news_articles WHERE id_category = $1', [category]);
     const count = parseInt(countResult.rows[0].count);
-
     // Get the articles for the current page and category
     const articlesResult = await pool.query(
-      'SELECT * FROM news_articles WHERE id_category = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3',
+      'SELECT * FROM news_articles WHERE id_category = $1 ORDER BY id_article DESC LIMIT $2 OFFSET $3',
       [category, limit, offset]
     );
 
@@ -102,11 +101,11 @@ app.get('/api/news/:category', async (req, res) => {
 // If you're deploying just an API, you can skip this.
 // If your app serves a frontend, ensure your build files are in a directory like 'client/build'.
 // Uncomment the lines below if serving static files:
-const path = require('path');
+/* const path = require('path');
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-});
+}); */
 
 // Start the server
 app.listen(port, () => {

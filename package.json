@@ -8,7 +8,7 @@
     "test-start": "npm run start --prefix client & npm run start-server",
     "scrap": "node server/utils/scrap.js",
     "start": "npm run start-all",
-    "start-all": "npm run start-client & npm run start-server",
+    "start-all": "npm run server & npm run client",
     "client": "npm start --prefix client",
     "server": "npm start --prefix server",
     "setup-and-start": "npm run install-all && npm start"

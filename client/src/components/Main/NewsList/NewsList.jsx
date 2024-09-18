@@ -24,6 +24,7 @@ const NewsList = ({ page, setLoading, setHasMore }) => {
     try {
       const response = await axios.get(`/api/news?page=${page}&limit=10`);
       const newArticles = response.data.articles;
+      console.log(newArticles);
 
       setNews(prevNews => {
         const updatedNews = { ...prevNews };

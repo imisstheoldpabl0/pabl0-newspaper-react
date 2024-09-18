@@ -13,10 +13,9 @@ number of articles in database per category:
     mas-deportivo = 15 -> 7pg
 
 Check number of articles per category:
-
-    SELECT 
+SELECT 
     nc.category,
-nc.id_category,
+    nc.id_category,
     COUNT(na.id_article) as article_count
 FROM 
     news_categories nc
@@ -27,3 +26,13 @@ GROUP BY
 ORDER BY 
 id_category;
 
+Encontrar con juninenses:
+SELECT
+    title,
+    article_url,
+    id_category,
+    id_article
+FROM
+    news_articles
+WHERE
+    title LIKE '%juninenses%';
