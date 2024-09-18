@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import PolicialesItem from './PolicialesItem/PolicialesItem.jsx';
+import CategoryItem from './CategoryItem/CategoryItem.jsx';
 import './NewsList.css';
 import NewsLoading from './NewsLoading/NewsLoading.jsx';
 import AdSense from '../../AdSense/AdSense.jsx';
@@ -51,7 +51,7 @@ const NewsList = ({ page, setLoading, setHasMore }) => {
   const renderCategoryNews = (categoryId, limit = 2) => {
     const articles = news[categoryId] || [];
     return articles.slice(0, limit).map((article, index) => (
-      <PolicialesItem
+      <CategoryItem
         key={`${page}-${categoryId}-${index}`}
         date={article.publication_date}
         title={article.title}
